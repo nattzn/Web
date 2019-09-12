@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Age</title>
+    <style>
+        /* .container { max-width: 800px; } */
+        h1  { text-align: center;}
+        .container { max-width:480px;font-size:20px;padding: 0 5px;margin: 0 auto}
+        .ipt {margin: 0 auto 0.2em;}
+        .btn {
+            margin: 0.2em auto;
+            /* display: inline-block; */
+            border-radius: 5px;
+            background-color: #f4511e;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 2em;
+            padding: 10px;
+            transition: all 0.5s;  cursor: pointer;}
+        input {
+            font-size: 1.5em;
+            width: 100%;
+        }
+        #result {
+            display: none;
+        }
+        #r1 {
+            text-align: left;
+        }
+        #r2 {
+            text-align: center;
+            font-size: 2em;
+        }
+        #r3 {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <h1>年齢計算機</h1>
+            <p>生年月日と希望年齢から年齢を計算します。</p>
+            <form>
+                <div><label>あなたの生年月日</label></div>
+                <div id="bd" calss="ipt">
+                    <input type="number" name="year" placeholder="生まれた年" min="1900">
+                    <input type="number" name="month" placeholder="生まれた月" min="1" max="12">
+                    <input type="number" name="day" placeholder="生まれた日" min="1" max="31">
+                </div>
+                <div><label>希望する年齢</label></div>
+                <div class="ipt"><input type="number" name="age" placeholder="希望の年齢" min="0"></div>
+        
+               <div class="btn" id="btnOK">計　算</div>
+            </form>
+            <div id="result">
+                <div id="r1">あなたの年齢は</div>
+                <div id="r2"></div>
+                <div id="r3">です。</div>
+            </div>
+         </div>
+    <script>
+        function hasInputTypeDate() {
+            var elm = document.createElement('input');
+            elm.setAttribute('type', 'date');
+            elm.value = 1;
+            return elm.value != 1;
+        }
+
+        document.getElementById("btnOK").onclick = function() {
+            let today = new Date()
+            let y,m,d
+            let a = Number(document.getElementsByName("age")[0].value)
+
+            if (hasInputTypeDate()) {
+                let bd = new Date(document.getElementsByName("birthday")[0].value)
+                y = bd.getFullYear()
+                m = bd.getMonth() + 1
+                d = bd.getDate()
+            } else {
+                y = Number(document.getElementsByName("year")[0].value)
+                m = Number(document.getElementsByName("month")[0].value)
+                d = Number(document.getElementsByName("day")[0].value)
+            }
+
+            if (0 < y && 0 < m && m <= 12 && 0 < d && d <= 31) {
+                let age = today.getFullYear() - y
+                let mon = today.getMonth() + 1 - m
+                if (today.getDate() < d) {
+                    mon--
+                }
+                
+                if (mon < 0) {
+                    age--
+                    mon = mon + 12
+                }
+                if (a < age) {
+                    mon = mon + (age - a) * 12
+                    age = a
+                }
+
+                document.getElementById('r2').innerHTML = age + "歳" + mon + "ヶ月"
+                document.getElementById('result').style.display = 'block'
+            } else {
+                document.getElementById('result').style.display = 'none'
+                alert("入力に誤りがあります。")
+            }
+        }
+
+        if (hasInputTypeDate()) {
+            document.getElementById('bd').innerHTML = '<input type="date" name="birthday" placeholder="生年月日" value="1980-01-01">'
+        }
+    </script>
+</body>
+</html>
