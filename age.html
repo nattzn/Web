@@ -8,8 +8,15 @@
     <style>
         /* .container { max-width: 800px; } */
         h1  { text-align: center;}
-        .container { max-width:480px;font-size:20px;padding: 0 5px;margin: 0 auto}
-        .ipt {margin: 0 auto 0.2em;}
+        .container {
+            max-width:480px;
+            font-size:20px;
+            padding: 0 5px;
+            margin: 0 auto
+        }
+        .ipt {
+            margin: 0 auto 0.2em;
+        }
         .btn {
             margin: 0.2em auto;
             /* display: inline-block; */
@@ -24,6 +31,7 @@
         input {
             font-size: 1.5em;
             width: 100%;
+            box-sizing: border-box;
         }
         #result {
             display: none;
@@ -52,7 +60,9 @@
                     <input type="number" name="day" placeholder="生まれた日" min="1" max="31">
                 </div>
                 <div><label>希望する年齢</label></div>
-                <div class="ipt"><input type="number" name="age" placeholder="希望の年齢" min="0"></div>
+                <div class="ipt">
+                    <input type="number" name="age" placeholder="希望の年齢" min="0">
+                </div>
         
                <div class="btn" id="btnOK">計　算</div>
             </form>
