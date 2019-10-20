@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>残りの日数</title>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap-reboot.min.css">
+<!--[if lt IE 9]>
+<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+<style>
+.box {
+    padding: 0.2em 0.5em;
+    margin: 2em 0;
+    color: #666;
+    background: #d6ebff;
+    box-shadow: 0px 0px 0px 10px #d6ebff;
+    border: dashed 2px #a3d3ff;
+    border-radius: 8px;
+    margin: 50px auto;
+    width: 300px;
+}
+.box p {
+    margin: 0px;
+    padding: 0.3rem;
+}
+</style>
+</head>
+<body>
+<div class="box">
+<p>今日は <span id="today"></span> です。</p>
+<p>今年 <span id="weekday_n"></span> 回目の <span id="weekday"></span>曜日です。</p>
+<p>今年の <span id="memory"></span> ％が過ぎました。</p>
+<p>残りは <span id="future"></span> 日です。</p>
+</div>
+<script>
+  var wd = ["日","月","火","水","木","金","土"]
+  var td = new Date()
+  var fd = new Date(td.getFullYear(),0,1)
+  var n = (td-fd) / (1000*60*60*24)  // 経過日数
+
+  function today() {
+    return td.toLocaleDateString(
+      "ja-JP-u-ca-japanese", {era:'long',year:'numeric',month:'long',day:'numeric'})
+  }
+  function weekday() {
+    return wd[td.getDay()]
+  }
+  function weekday_n() {
+    return Math.floor((n)/7+1)
+  }
+  function memory() {
+    var y = td.getFullYear()
+    var yn = (365-28) + new Date(y,2,0).getDate()     // 今年の日数
+    return (n/yn*100).toFixed(2)
+  }
+  function future() {
+    var ny = new Date(td.getFullYear()+1,0,1)
+    return Math.ceil((new Date(ny-td)).getTime()/(1000*60*60*24))
+  }
+
+  document.getElementById("today").innerHTML = today()
+  document.getElementById("memory").innerHTML = memory()
+  document.getElementById("weekday_n").innerHTML = weekday_n()
+  document.getElementById("weekday").innerHTML = weekday()
+  document.getElementById("future").innerHTML = future()
+
+</script>
+</body>
+</html>

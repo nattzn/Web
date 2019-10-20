@@ -1,0 +1,38 @@
+@page { size: A4; }
+
+body {
+  font-size: 5mm;
+}
+
+h1 {
+  margin-left: 10mm;
+  margin-bottom: 5mm;
+}
+#main {
+  width: 172mm !important;
+  height: 251mm !important;
+  margin: 0px auto;
+}
+#left {
+  float: left;
+}
+#right {
+  float: right;
+}
+table {
+  width: 84mm;
+  border-collapse: collapse;
+  line-height: 2rem;
+  text-align: center;
+}
+thead {
+  background: #ccc;
+}
+th, td {
+  width: 4rem;
+  border: solid 1px black;
+}
+p {
+  clear: left;
+  text-align: right;
+}

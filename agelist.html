@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>高年齢早見表</title>
+<meta charset="utf-8">
+<meta name="description" content="60歳以上の年齢早見表です。">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap-reboot.min.css">
+<style>
+body {
+  font-size: 5mm;
+}
+
+h1 {
+  margin-left: 10mm;
+  margin-bottom: 5mm;
+}
+#main {
+}
+
+table {
+  border-collapse: collapse;
+  line-height: 2rem;
+  text-align: center;
+  display: inline-block;
+  margin: 2mm 3mm;
+}
+thead {
+  background: #ccc;
+}
+th, td {
+  width: 4rem;
+  border: solid 1px black;
+}
+.wareki {
+  width: 5rem;
+}
+</style>
+
+<!--[if lt IE 9]>
+<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body>
+<div id="main">
+  <header>
+    <h1>年齢早見表 (<span id="year"></span>年版)</h1>
+  </header>
+  <div id="contents"></div>
+  <footer>
+    <p>※ 誕生日がきていない場合は１歳引いてください。</p>
+  </footer>
+</div>
+<script>
+  const MAX_ROW = 23
+  var now_y = (new Date()).getFullYear()
+  // 和暦の取得
+  function era(year) {
+    return 2018 < year ? "令和" + (year - 2018)   // 2019/05/01 ～
+         : 1988 < year ? "平成" + (year - 1988)   // 1989/01/08 ～
+         : 1926 < year ? "昭和" + (year - 1925)   // 1926/12/25 ～
+         : 1912 < year ? "大正" + (year - 1911)   // 1912/07/30 ～
+                       : "明治" + (year - 1867)   // 1868/09/08 ～
+  }
+  // 年齢の取得
+  function age(year) {
+    return now_y - year
+  }
+  // 干支の取得
+  function zodiac(year) {
+    return ["申","酉","戌","亥","子","丑","寅","卯","辰","巳","午","未"][year%12]
+  }
+  // 表の作成
+  function createTable(year) {
+    var r = ""
+    var dt = new Date(year, 0, 1)
+    r += "<table><thead><tr><th>西 暦</th><th class='wareki'>和 暦</th><th>年 齢</th><th>干 支</th></tr></thead><tbody>"
+    for(var y=dt.getFullYear(); y>dt.getFullYear() - MAX_ROW; y--) {
+        r += "<tr><td>"+y+"</td><td>"+era(y)+"</td><td>"+age(y)+"</td><td>"+zodiac(y)+"</td></tr>"
+    }
+    r += "</tbody></table>"
+    return r
+  }
+
+  document.getElementById("year").innerHTML = now_y
+  var table = document.getElementById("contents")
+  for(var i=0; i<5; i++) {
+    table.insertAdjacentHTML('beforeend', createTable(now_y - MAX_ROW * i))
+  }
+</script>
+</body>
+</html>
