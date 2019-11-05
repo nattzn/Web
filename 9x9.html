@@ -31,7 +31,7 @@
             height: 1em;
             border-radius: 0.2em;
         }
-        .odd {
+        .even {
             background-color: #9cf;
         }
     </style>
@@ -61,7 +61,7 @@
         for(let y of row) {
             r += "<tr><th>" + y + "</th>"
             for(let x of col) {
-                r += "<td" + (x*y%2===0 ? " class='odd'" : "") + ">" + x*y + "</td>"
+                r += "<td" + (x*y%2===0 ? " class='even'" : "") + ">" + x*y + "</td>"
             }
             r += "</tr>"
         }
