@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>9x9</title>
+    <style>
+        #flex {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0px auto;
+            justify-content: center;
+        }
+        h1 {
+            background: #fe7;
+            text-align: center;
+        }
+        table {
+            text-align: center;
+            margin: 1em;
+        }
+        th {
+            background: #0c6;
+        }
+        th:empty {
+            background-color: #FFF;
+        }
+        th,td {
+            width: 2em;
+            height: 1em;
+            border-radius: 0.2em;
+        }
+        .odd {
+            background-color: #9cf;
+        }
+    </style>
+</head>
+<body>
+    <h1>百マス計算</h1>
+    <div id="flex"></div>
+</body>
+<script>
+    Array.prototype.shuffle = function() {
+        for(let i=8;i>0;i--) {
+            let j = Math.floor(Math.random()*(i+1))
+            let tmp = this[i]
+            this[i] = this[j]
+            this[j] = tmp
+        }
+    }
+
+    function createTable(col, row) {
+        let r = ""
+        r += "<table><tr><th></th>"
+        //for(let x=0;x<9;x++) {
+        for(let x of col) {
+            r += "<th>" + x + "</th>"
+        }
+        r += "</tr>"
+        for(let y of row) {
+            r += "<tr><th>" + y + "</th>"
+            for(let x of col) {
+                r += "<td" + (x*y%2===0 ? " class='odd'" : "") + ">" + x*y + "</td>"
+            }
+            r += "</tr>"
+        }
+        r += "</table>"
+        return r
+    }
+
+    let str = ""
+    let col = [...Array(9).keys()].map(i => ++i)
+    let row = [...Array(9).keys()].map(i => ++i)
+    str += createTable(col, row)
+    for (let i=0;i<10;i++) {
+        col.shuffle()
+        row.shuffle()
+        str += createTable(col, row)
+    }
+    document.getElementById("flex").innerHTML = str
+</script>
+</html>
