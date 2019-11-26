@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        @media print {
+            .screen {
+                display: none;
+            }
+        }
+        body {
+            font-family: Impact, "yu gothic bold";
+            -webkit-print-color-adjust: exact; /* Chrome */
+        }
+        main {
+            width: 196mm;
+            margin: auto;
+        }
+        div.calendar {
+            position: relative;
+            margin-top: 7mm;
+        }
+        div.calendar:last-child {
+            margin-top: 14mm;
+        }
+        .backmonth {
+            position: absolute;
+            bottom: -5mm;
+            right: 10mm;
+            text-align: right;
+            font-family: Glockenspiel;
+            color: gray !important;
+            font-size: 50mm;
+            font-weight: bold;
+            z-index: -1;
+        }
+        .weekly {
+            background-color: lightgray;
+        }
+        .days {
+            display: flex;
+        }
+        .calendar .week {
+            width: 28mm;
+            font-weight: bold;
+        }
+        .calendar .day {
+            height: 19mm;
+            border: 1px solid #000;
+            padding: 0mm 2mm;
+        }
+        .week .day {
+            font-size: 9mm;
+        }
+        .day.week {
+            height: 10mm;
+            text-align: center;
+            font-size: 7mm;
+        }
+        .week:first-child {
+            color: red;
+        }
+        .week:last-child {
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+    <script>
+        function drawCalendar() {
+            let year = parseInt(document.getElementById('year').value)
+            let month = parseInt(document.getElementById('month').value)
+            
+            let dt = new Date(parseInt(year), parseInt(month)-1)
+            let wday = dt.getDay()
+            dt.setDate(0)
+            let last = dt.getDate()
+            
+            let parent = document.body.getElementsByTagName('main')[0]
+            let e
+
+            // 中身を削除
+            parent.textContent = '';
+            
+            for(let i=0; i<2;i++) {
+                // div.calendar
+                parent.appendChild(document.createElement('div'))
+                e = parent.lastChild
+                e.classList.add('calendar')
+
+                // div.days.weekly
+                e.appendChild(document.createElement('div'))
+                e = e.lastChild
+                e.classList.add('days', 'weekly')
+                for(let w of "日月火水木金土".split("")) {
+                    e.insertAdjacentHTML(
+                        'beforeend', "<div class='day week'>"+w+"</div>")
+                }
+                e = e.parentNode
+
+                // div.days
+                e.appendChild(document.createElement('div'))
+                e = e.lastChild
+                e.classList.add('days')
+                for(let week=0;week<7;week++) {
+                    e.appendChild(document.createElement('div'))
+                    e = e.lastChild
+                    e.classList.add('week')
+                    for(let row=0;row<6;row++) {
+                        let n = row * 7 + week + 1 - wday
+                        if(n<=0 || last < n) {
+                            e.insertAdjacentHTML('beforeend', "<div class='day'></div>")
+                        } else {
+                            e.insertAdjacentHTML('beforeend', "<div class='day'>"+n+"</div>")
+                        }
+                    }
+                    e = e.parentNode
+                }
+                
+                e.insertAdjacentHTML('afterend', '<div class="backmonth">'+month+'</div>')
+            }
+        }
+    </script>
+
+    <div class="screen">
+        <input type="text" name="" id="year">
+        <input type="text" name="" id="month">
+        <button onclick="drawCalendar()">更新</button>
+        <script>
+            let dt = new Date()
+            dt.setMonth(dt.getMonth()+1)
+            document.getElementById('year').value = dt.getFullYear()
+            document.getElementById('month').value = dt.getMonth()+1
+        </script>
+    </div>
+    <main>
+        <script>drawCalendar()</script>
+    </main>
+</body>
+</html>
