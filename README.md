@@ -1,4 +1,4 @@
 # Web
 
 ## Site
-https://korojam.github.io/Web/
+https://natsu-sun.github.io/Web/
