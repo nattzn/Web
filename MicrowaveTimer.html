@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>電子レンジ加熱時間計算機</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding-top: 1em;
+      background: #f4f4f4;
+    }
+    .container {
+      background: #fff;
+      padding: 1.5em;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 1em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 1em;
+    }
+    .form-group label {
+      width: 100%;
+      max-width: 150px;
+      margin-bottom: 0.3em;
+      font-weight: bold;
+    }
+    .form-group input {
+      flex: 1;
+      padding: 0.4em;
+      min-width: 0;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.3em;
+    }
+    button {
+      width: 100%;
+      padding: 0.7em;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    #result {
+      margin-top: 1em;
+      font-weight: bold;
+      text-align: center;
+    }
+    @media (min-width: 400px) {
+      .form-group {
+        flex-wrap: nowrap;
+      }
+      .form-group label {
+        width: 40%;
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>電子レンジ加熱時間計算機</h2>
+
+    <div class="section-title">標準（レシピ記載など）</div>
+    <div class="form-group">
+      <label for="minutes">加熱時間（分）:</label>
+      <input type="number" id="minutes" min="0" placeholder="例: 2">
+    </div>
+    <div class="form-group">
+      <label for="seconds">加熱時間（秒）:</label>
+      <input type="number" id="seconds" min="0" step="10" placeholder="例: 30">
+    </div>
+    <div class="form-group">
+      <label for="original-watt">ワット数（W）:</label>
+      <input type="number" id="original-watt" min="500" step="50" list="watt-list" placeholder="例: 500">
+    </div>
+
+    <div class="section-title">使用している電子レンジ</div>
+    <div class="form-group">
+      <label for="target-watt">ワット数（W）:</label>
+      <input type="number" id="target-watt" min="200" step="50" list="watt-list" placeholder="例: 600">
+    </div>
+
+    <datalist id="watt-list">
+      <option value="500"></option>
+      <option value="600"></option>
+      <option value="1000"></option>
+      <option value="1500"></option>
+    </datalist>
+
+    <button onclick="calculateTime()">加熱時間を計算</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateTime() {
+      const minutes = parseFloat(document.getElementById('minutes').value) || 0;
+      const seconds = parseFloat(document.getElementById('seconds').value) || 0;
+      const originalTime = minutes * 60 + seconds;
+
+      const originalWatt = parseFloat(document.getElementById('original-watt').value);
+      const targetWatt = parseFloat(document.getElementById('target-watt').value);
+
+      if (!originalTime || !originalWatt || !targetWatt) {
+        document.getElementById('result').innerText = 'すべての項目を入力してください';
+        return;
+      }
+
+      const adjustedTime = originalTime * originalWatt / targetWatt;
+
+      const adjustedMinutes = Math.floor(adjustedTime / 60);
+      const adjustedSeconds = Math.round(adjustedTime % 60);
+
+      document.getElementById('result').innerText = `目安加熱時間: ${adjustedMinutes}分 ${adjustedSeconds}秒`;
+    }
+  </script>
+</body>
+</html>
